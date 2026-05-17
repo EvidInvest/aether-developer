@@ -1,0 +1,14 @@
+{
+  "name": "aether-developer",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Aether developer libraries — MCP client, REST SDK, and runnable examples for the Aether search API.",
+  "scripts": {
+    "build": "pnpm -r --filter './packages/*' run build",
+    "typecheck": "pnpm -r --filter './packages/*' run typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  },
+  "packageManager": "pnpm@10.33.2"
+}
