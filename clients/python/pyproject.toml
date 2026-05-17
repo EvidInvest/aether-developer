@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aether-sdk"
+version = "0.1.0"
+description = "Python client for the Aether REST API — financial-vertical agent search engine."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Apache-2.0" }
+authors = [{ name = "EvidInvest / EBD-Sweden" }]
+keywords = ["aether", "sec-filings", "earnings-transcripts", "financial-search", "client", "sdk"]
+classifiers = [
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = ["httpx>=0.27"]
+
+[project.urls]
+Homepage = "https://github.com/EvidInvest/aether-developer/tree/main/clients/python"
+Repository = "https://github.com/EvidInvest/aether-developer"
+Issues = "https://github.com/EvidInvest/aether-developer/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aether"]

@@ -12,11 +12,11 @@
   ],
   "author": "EvidInvest / EBD-Sweden",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/EvidInvest/aether-developer/tree/main/packages/sdk",
+  "homepage": "https://github.com/EvidInvest/aether-developer/tree/main/clients/typescript",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EvidInvest/aether-developer.git",
-    "directory": "packages/sdk"
+    "directory": "clients/typescript"
   },
   "bugs": {
     "url": "https://github.com/EvidInvest/aether-developer/issues"

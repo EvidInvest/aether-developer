@@ -1,20 +1,35 @@
 # aether-developer
 
-Developer libraries and examples for **Aether** — financial-vertical agent
-search engine (https://aether.evidinvest.com).
+Everything you need to call [Aether](https://aether.evidinvest.com) — the
+financial-vertical agent search engine — from your own code or your
+favourite MCP-enabled IDE.
 
-## Packages
+The repo holds two kinds of integration plus the docs that explain them:
 
-| Package | Description |
-|---|---|
-| [`@evidinvest/aether-mcp`](./packages/mcp) | stdio MCP server. Lets Claude Desktop, Cursor, Cline, Continue, or any MCP-stdio client call Aether's tools via `npx -y @evidinvest/aether-mcp`. OAuth 2.0 device flow on first run. |
-| [`@evidinvest/aether-sdk`](./packages/sdk) | Tiny TypeScript HTTP SDK over the Aether `/v1/*` REST API. Direct-call alternative to the MCP wrapper. |
+1. **MCP wrapper** — `@evidinvest/aether-mcp`. Drop it into Claude
+   Desktop, Cursor, Cline, or any stdio-MCP client and you can search SEC
+   filings + earnings transcripts from chat.
+2. **Client libraries** — small typed HTTP clients in TypeScript / Python
+   (and more languages over time). For when you're building your own
+   service instead of using an MCP-aware UI.
+
+```
+aether-developer/
+├── docs/                    — how to use Aether for search / via MCP
+├── mcp/                     — @evidinvest/aether-mcp (stdio MCP server)
+├── clients/
+│   ├── typescript/          — @evidinvest/aether-sdk
+│   └── python/              — aether-sdk (PyPI)
+└── examples/                — runnable demos + config snippets
+```
 
 ## Quick start
 
-```bash
-# As an end user (Claude Desktop / Cursor):
-#   Add to claude_desktop_config.json:
+### Claude Desktop / Cursor / Cline (MCP)
+
+Add this to your client's MCP-server config:
+
+```json
 {
   "mcpServers": {
     "aether": {
@@ -23,23 +38,57 @@ search engine (https://aether.evidinvest.com).
     }
   }
 }
+```
 
-# As a developer building on top of the HTTP API:
+First run prints a device-code URL — open it, sign in, approve. Full guide:
+[`docs/mcp.md`](./docs/mcp.md).
+
+### TypeScript / Node
+
+```bash
 pnpm add @evidinvest/aether-sdk
 ```
 
-See [`examples/`](./examples) for runnable usage.
+```ts
+import { AetherClient } from "@evidinvest/aether-sdk";
 
-## Repo layout
+const aether = new AetherClient({ apiKey: process.env.AETHER_API_KEY });
+const { hits } = await aether.search({ query: "Apple supply-chain risk", limit: 5 });
+```
 
+Full guide: [`clients/typescript/README.md`](./clients/typescript/README.md).
+
+### Python
+
+```bash
+pip install aether-sdk
 ```
-aether-developer/
-├── packages/
-│   ├── mcp/      — @evidinvest/aether-mcp (stdio MCP wrapper)
-│   └── sdk/      — @evidinvest/aether-sdk (HTTP TS SDK)
-└── examples/
-    └── node-search/  — minimal Node script that calls /v1/search via the SDK
+
+```python
+from aether import AetherClient
+
+with AetherClient(api_key="ak_...") as aether:
+    result = aether.search(query="Apple supply-chain risk", limit=5)
+    for hit in result.hits:
+        print(hit.score, hit.section_title)
 ```
+
+Full guide: [`clients/python/README.md`](./clients/python/README.md).
+
+## Docs
+
+- [`docs/search.md`](./docs/search.md) — request/response shapes, auth, schemas.
+- [`docs/mcp.md`](./docs/mcp.md) — MCP setup for Claude Desktop, Cursor, Cline, env overrides.
+
+## Get an API key
+
+https://aether.evidinvest.com/developer/keys
+
+## Contribute a client library
+
+The TypeScript and Python clients are intentionally tiny — one bearer-token
+fetch wrapper + typed shapes for `/v1/search`. Porting to Go, Rust, Java,
+etc. should fit in ~150 lines. Open a PR under `clients/<lang>/`.
 
 ## License
 

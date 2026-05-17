@@ -2,10 +2,10 @@
   "name": "aether-developer",
   "private": true,
   "version": "0.0.0",
-  "description": "Aether developer libraries — MCP client, REST SDK, and runnable examples for the Aether search API.",
+  "description": "Aether developer kit — MCP wrapper, client libraries (TS, Python…), docs, and runnable examples.",
   "scripts": {
-    "build": "pnpm -r --filter './packages/*' run build",
-    "typecheck": "pnpm -r --filter './packages/*' run typecheck"
+    "build": "pnpm -r --filter '@evidinvest/aether-mcp' --filter '@evidinvest/aether-sdk' run build",
+    "typecheck": "pnpm -r --filter '@evidinvest/aether-mcp' --filter '@evidinvest/aether-sdk' run typecheck"
   },
   "devDependencies": {
     "typescript": "^5.6.0"

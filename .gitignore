@@ -1,6 +1,15 @@
 node_modules
 dist
 *.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+build/
+*.egg-info/
+
+# Local
 .env
 .env.local
 .DS_Store

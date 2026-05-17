@@ -1,3 +1,4 @@
 packages:
-  - "packages/*"
+  - "mcp"
+  - "clients/typescript"
   - "examples/*"
