@@ -1,0 +1,15 @@
+startCommand:
+  type: stdio
+  command: npx
+  args:
+    - "-y"
+    - "@evidinvest/aether-mcp"
+  configSchema:
+    type: object
+    properties:
+      apiKey:
+        type: string
+        title: Aether API Key
+        description: Optional API key (ak_…) from https://aether.evidinvest.com/developer/keys. If omitted, the wrapper runs an OAuth 2.0 device flow on first launch and caches the token in ~/.config/aether/credentials.json.
+  exampleConfig:
+    apiKey: ak_your_key_here

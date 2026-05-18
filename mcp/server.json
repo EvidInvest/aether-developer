@@ -1,0 +1,27 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.EvidInvest/aether-developer",
+  "description": "11 tools: financial_search, transcript_search, marketplace partners/proxy, seller signup + publish for SEC filings and earnings transcripts.",
+  "repository": {
+    "url": "https://github.com/EvidInvest/aether-developer",
+    "source": "github"
+  },
+  "version": "0.2.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@evidinvest/aether-mcp",
+      "version": "0.2.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AETHER_API_KEY",
+          "description": "Optional Aether API key (ak_…). If unset, the package runs OAuth 2.0 device flow on first run. Get keys at https://aether.evidinvest.com/developer/keys.",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

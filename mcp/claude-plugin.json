@@ -1,0 +1,43 @@
+{
+  "name": "Aether",
+  "description": "Aether MCP Server — financial-vertical agent search engine. Hybrid SEC filings (10-K/10-Q/8-K) + earnings transcripts retrieval over 1.4M+ chunks, plus a two-sided marketplace for third-party data. Tools: financial_search, transcript_search, list_partners, partner_search, partner_proxy_search, seller_signup, seller_publish_document, seller_register_endpoint, seller_list_my_documents, seller_list_my_endpoints. Connect Claude, Cursor, Cline, or any MCP client.",
+  "version": "0.2.0",
+  "type": "mcp",
+  "config": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "@evidinvest/aether-mcp@latest"
+    ],
+    "env": {
+      "AETHER_API_KEY": "${AETHER_API_KEY}"
+    }
+  },
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": true
+  },
+  "prompts": [
+    {
+      "name": "sec-deep-dive",
+      "description": "Search SEC filings for a topic on a specific company",
+      "template": "Search Aether's SEC filings for {{topic}} on {{ticker}}. Pull the most relevant 10-K / 10-Q / 8-K sections, then summarize the key risks and any forward-looking statements."
+    },
+    {
+      "name": "earnings-narrative",
+      "description": "Pull earnings-call commentary on a topic",
+      "template": "Search Aether's earnings-call transcripts for {{topic}} (last {{quarters}} quarters) and quote CEO/CFO commentary verbatim with the call date + speaker."
+    },
+    {
+      "name": "supply-chain-exposure",
+      "description": "Find companies exposed to a supply-chain risk",
+      "template": "Use Aether financial_search to find recent SEC filings discussing exposure to {{risk}}. Group results by ticker, show the most relevant chunk per ticker, and rank by recency + relevance score."
+    },
+    {
+      "name": "competitive-mentions",
+      "description": "How does company A talk about competitor B in their filings",
+      "template": "Search Aether's SEC corpus for any mention of {{competitor}} in {{ticker}}'s recent filings. Quote the passage and give the section/filing/date."
+    }
+  ]
+}
