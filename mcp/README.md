@@ -2,7 +2,7 @@
 
 Stdio MCP server for Aether. One-line install for Claude Desktop, Cursor, Cline, Continue — anything that spawns an MCP server as a subprocess over stdio.
 
-> Aether is a financial-vertical agent search engine + marketplace: hybrid SEC filings + earnings-transcript retrieval over 1.4M+ chunks, plus a two-sided marketplace for third-party data. Production endpoint: `https://aether.evidinvest.com/mcp` (HTTP MCP).
+> Aether is a financial-vertical agent search engine + marketplace: hybrid SEC filings + earnings-transcript retrieval over 1.4M+ chunks, plus a two-sided marketplace for third-party data. Production endpoint: `https://api.aether.evidinvest.com/mcp` (HTTP MCP).
 
 This package wraps that HTTP endpoint so MCP clients that only speak stdio can still use it.
 
@@ -71,7 +71,7 @@ Any client that supports MCP stdio servers takes the same shape — name, comman
 
 ## Tools exposed
 
-Auto-discovered on startup from `https://aether.evidinvest.com/v1/tools`:
+Auto-discovered on startup from `https://api.aether.evidinvest.com/v1/tools`:
 
 | Tool | Purpose |
 |---|---|
@@ -90,7 +90,7 @@ Auto-discovered on startup from `https://aether.evidinvest.com/v1/tools`:
 
 | Variable | Default | Effect |
 |---|---|---|
-| `AETHER_BASE_URL` | `https://aether.evidinvest.com` | Override for local dev (`http://localhost:8787`) or staging |
+| `AETHER_BASE_URL` | `https://api.aether.evidinvest.com` | Override for local dev (`http://localhost:8787`) or staging |
 | `AETHER_API_KEY` | `(empty)` | If set, attached as `Authorization: Bearer <key>` to every tool call. Use a seller key (`aether_sk_…`) for seller actions OR an agent key (`aether_ak_…`) for higher search rate limits + paid proxy access. |
 
 ## Smoke-test from the command line
@@ -118,7 +118,7 @@ MCP client (Claude Desktop / Cursor / Cline)
        │ HTTP MCP (REST-shaped, /v1/tools/<name>)
        │ optionally with `Authorization: Bearer …`
        ▼
-Aether HTTP MCP @ aether.evidinvest.com/mcp
+Aether HTTP MCP @ api.aether.evidinvest.com/mcp
        │
        ├──► Vespa (filing_chunk + transcript_segment + partner_document)
        ├──► Embedder + reranker (GPU service)

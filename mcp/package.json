@@ -1,7 +1,7 @@
 {
   "name": "@evidinvest/aether-mcp",
   "version": "0.2.0",
-  "description": "Aether MCP — stdio MCP server that wraps the Aether HTTP API (https://aether.evidinvest.com/mcp). Lets Claude Desktop, Cursor, Cline, and any stdio-MCP client use Aether's hybrid SEC + transcript search + marketplace tools with a single `npx` install.",
+  "description": "Aether MCP — stdio MCP server that wraps the Aether HTTP API (https://api.aether.evidinvest.com/mcp). Lets Claude Desktop, Cursor, Cline, and any stdio-MCP client use Aether's hybrid SEC + transcript search + marketplace tools with a single `npx` install.",
   "keywords": [
     "mcp",
     "claude",

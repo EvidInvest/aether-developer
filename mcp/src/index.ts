@@ -17,7 +17,7 @@
  *   • If refresh expired/revoked, fall back to device flow again.
  *
  * Environment:
- *   AETHER_BASE_URL       default https://aether.evidinvest.com
+ *   AETHER_BASE_URL       default https://api.aether.evidinvest.com
  *   AETHER_CLIENT_ID      default 'aether-mcp-cli' (the trusted first-party client)
  *   AETHER_SCOPE          default 'aether.search aether.search.partners
  *                                  aether.partners.proxy aether.seller.read
@@ -38,7 +38,7 @@ import {
   type Tool,
 } from "@modelcontextprotocol/sdk/types.js";
 
-const BASE_URL = (process.env.AETHER_BASE_URL ?? "https://aether.evidinvest.com").replace(/\/$/, "");
+const BASE_URL = (process.env.AETHER_BASE_URL ?? "https://api.aether.evidinvest.com").replace(/\/$/, "");
 const CLIENT_ID = process.env.AETHER_CLIENT_ID ?? "aether-mcp-cli";
 const SCOPE =
   process.env.AETHER_SCOPE ??

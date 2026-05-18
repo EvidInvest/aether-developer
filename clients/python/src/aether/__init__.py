@@ -22,7 +22,7 @@ from typing import Any, Optional
 
 import httpx
 
-DEFAULT_BASE_URL = "https://aether.evidinvest.com"
+DEFAULT_BASE_URL = "https://api.aether.evidinvest.com"
 
 
 @dataclass

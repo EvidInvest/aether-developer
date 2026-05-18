@@ -18,7 +18,7 @@ export interface AetherClientOptions {
    * authenticated endpoints; anonymous calls hit a low rate limit.
    */
   apiKey?: string;
-  /** Override the API base. Defaults to https://aether.evidinvest.com. */
+  /** Override the API base. Defaults to https://api.aether.evidinvest.com. */
   baseUrl?: string;
   /** Override fetch (e.g. node-fetch in older Node, MSW in tests). */
   fetch?: typeof fetch;
@@ -72,7 +72,7 @@ export class AetherClient {
   private readonly fetchImpl: typeof fetch;
 
   constructor(opts: AetherClientOptions = {}) {
-    this.baseUrl = (opts.baseUrl ?? "https://aether.evidinvest.com").replace(
+    this.baseUrl = (opts.baseUrl ?? "https://api.aether.evidinvest.com").replace(
       /\/+$/,
       "",
     );

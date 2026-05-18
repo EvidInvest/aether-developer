@@ -17,7 +17,7 @@ Anonymous calls work but are rate-limited.
 ## Request
 
 ```http
-POST https://aether.evidinvest.com/v1/search
+POST https://api.aether.evidinvest.com/v1/search
 Authorization: Bearer ak_...
 Content-Type: application/json
 
@@ -70,7 +70,7 @@ Content-Type: application/json
 ## Direct HTTP example (curl)
 
 ```bash
-curl -sS https://aether.evidinvest.com/v1/search \
+curl -sS https://api.aether.evidinvest.com/v1/search \
   -H "authorization: Bearer $AETHER_API_KEY" \
   -H "content-type: application/json" \
   -d '{"query":"supply chain risk Taiwan","limit":5}' | jq .

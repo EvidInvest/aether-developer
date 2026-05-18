@@ -3,7 +3,7 @@
 [Model Context Protocol](https://modelcontextprotocol.io) lets a Claude
 client (Desktop, Cursor, Cline, Continue, …) spawn a small server as a
 subprocess and call its tools over stdio. The Aether MCP wrapper is a
-stdio MCP server that proxies to `https://aether.evidinvest.com`.
+stdio MCP server that proxies to `https://api.aether.evidinvest.com`.
 
 ```
 Claude Desktop  ──(stdio)──►  @evidinvest/aether-mcp  ──(HTTPS)──►  Aether API
@@ -55,7 +55,7 @@ flows back as tool output.
 
 | Var | Default | Purpose |
 |---|---|---|
-| `AETHER_BASE_URL` | `https://aether.evidinvest.com` | Point at staging / a local MCP server. |
+| `AETHER_BASE_URL` | `https://api.aether.evidinvest.com` | Point at staging / a local MCP server. |
 | `AETHER_CLIENT_ID` | `aether-mcp-cli` | OAuth client ID (first-party). |
 | `AETHER_SCOPE` | `aether.search aether.search.partners …` | OAuth scopes requested. |
 | `AETHER_API_KEY` | — | Skip OAuth; use this API key as a Bearer token. |
