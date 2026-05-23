@@ -74,7 +74,7 @@ const SCOPE =
   "aether.search aether.search.partners aether.partners.proxy aether.seller.read aether.account.read";
 const LEGACY_API_KEY = process.env.AETHER_API_KEY ?? "";
 const NO_AUTH = process.env.AETHER_NO_AUTH === "1";
-const VERSION = "0.3.0";
+const VERSION = "0.3.1";
 
 // ---------------------------------------------------------------------------
 // Credentials file (~/.config/aether/credentials.json by default)
@@ -344,10 +344,23 @@ async function callTool(name: string, args: Record<string, unknown>): Promise<un
 }
 
 async function main(): Promise<void> {
-  // Health probe.
-  const healthRes = await fetch(`${API_BASE_URL}/healthz`, {
-    signal: AbortSignal.timeout(5_000),
-  }).catch(() => null);
+  // Pre-warm both origins in parallel so the first real tool call doesn't
+  // pay the ~250 ms TCP + TLS handshake.
+  //   - API_BASE_URL → tool catalog + tool calls
+  //   - MCP_BASE_URL → OAuth device-code + token refresh
+  // When the two hosts collapse to a single base (legacy AETHER_BASE_URL),
+  // the second probe is deduped against the first connection pool entry.
+  const probes = [
+    fetch(`${API_BASE_URL}/healthz`, { signal: AbortSignal.timeout(5_000) }).catch(() => null),
+  ];
+  if (MCP_BASE_URL !== API_BASE_URL) {
+    probes.push(
+      fetch(`${MCP_BASE_URL}/.well-known/oauth-authorization-server`, {
+        signal: AbortSignal.timeout(5_000),
+      }).catch(() => null),
+    );
+  }
+  const [healthRes] = await Promise.all(probes);
   if (!healthRes || !healthRes.ok) {
     process.stderr.write(
       `[aether-mcp] warning: ${API_BASE_URL}/healthz not OK at startup.\n`,
