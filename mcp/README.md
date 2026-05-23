@@ -2,9 +2,16 @@
 
 Stdio MCP server for Aether. One-line install for Claude Desktop, Cursor, Cline, Continue — anything that spawns an MCP server as a subprocess over stdio.
 
-> Aether is a financial-vertical agent search engine + marketplace: hybrid SEC filings + earnings-transcript retrieval over 1.4M+ chunks, plus a two-sided marketplace for third-party data. Production endpoint: `https://api.aether.evidinvest.com/mcp` (HTTP MCP).
+> Aether is a financial-vertical agent search engine + marketplace: hybrid SEC filings + earnings-transcript retrieval over 1.4M+ chunks, plus a two-sided marketplace for third-party data.
 
-This package wraps that HTTP endpoint so MCP clients that only speak stdio can still use it.
+## Public surface — two hosts
+
+| Host | Use |
+|---|---|
+| `https://aether.evidinvest.com` | MCP protocol (`/mcp`), OAuth + account creation (`/v1/oauth/*`, `/v1/agent/*`), marketing + dashboard. **Use this URL when telling an MCP client where Aether lives.** |
+| `https://api.aether.evidinvest.com` | Search-engine tool calls only (`/v1/tools/*`). Direct REST surface for clients that don't want to speak MCP. |
+
+This package wraps the HTTP endpoints so MCP clients that only speak stdio can still use Aether without thinking about which host serves what.
 
 ## Install
 
@@ -71,7 +78,7 @@ Any client that supports MCP stdio servers takes the same shape — name, comman
 
 ## Tools exposed
 
-Auto-discovered on startup from `https://api.aether.evidinvest.com/v1/tools`:
+Auto-discovered on startup from `${AETHER_API_BASE_URL}/v1/tools` (defaults to `https://api.aether.evidinvest.com/v1/tools`):
 
 | Tool | Purpose |
 |---|---|
@@ -90,7 +97,9 @@ Auto-discovered on startup from `https://api.aether.evidinvest.com/v1/tools`:
 
 | Variable | Default | Effect |
 |---|---|---|
-| `AETHER_BASE_URL` | `https://api.aether.evidinvest.com` | Override for local dev (`http://localhost:8787`) or staging |
+| `AETHER_API_BASE_URL` | `https://api.aether.evidinvest.com` | Override host for tool calls (`/v1/tools/*`). Use `http://localhost:8787` for local dev. |
+| `AETHER_MCP_BASE_URL` | `https://aether.evidinvest.com` | Override host for OAuth + account creation (`/v1/oauth/*`, `/v1/agent/*`). Use `http://localhost:8787` for local dev. |
+| `AETHER_BASE_URL` | _deprecated_ | If set, overrides BOTH hosts. Kept for back-compat with `aether-mcp@0.2.x`. |
 | `AETHER_API_KEY` | `(empty)` | If set, attached as `Authorization: Bearer <key>` to every tool call. Use a seller key (`aether_sk_…`) for seller actions OR an agent key (`aether_ak_…`) for higher search rate limits + paid proxy access. |
 
 ## Smoke-test from the command line
@@ -115,18 +124,19 @@ MCP client (Claude Desktop / Cursor / Cline)
        │ JSON-RPC over stdio
        ▼
 @evidinvest/aether-mcp (this package, Node)
-       │ HTTP MCP (REST-shaped, /v1/tools/<name>)
-       │ optionally with `Authorization: Bearer …`
-       ▼
-Aether HTTP MCP @ api.aether.evidinvest.com/mcp
        │
-       ├──► Vespa (filing_chunk + transcript_segment + partner_document)
-       ├──► Embedder + reranker (GPU service)
-       └──► Postgres (sellers, agents, marketplace state)
+       ├──► HTTPS  aether.evidinvest.com/v1/oauth/*      (device-code auth, token refresh)
+       └──► HTTPS  api.aether.evidinvest.com/v1/tools/*  (tool discovery + calls)
+                                  │
+                                  ├──► Vespa (filing_chunk + transcript_segment + partner_document)
+                                  ├──► Embedder + reranker (BAAI/bge-reranker-v2-m3 on CPU)
+                                  └──► Postgres (sellers, agents, marketplace state)
 ```
+
+MCP clients that want to skip this stdio wrapper can connect directly to the StreamableHTTP transport at `https://aether.evidinvest.com/mcp` — same surface, no Node subprocess needed.
 
 Tool defs are discovered once on startup; any new tools added upstream show up after restart without releasing a new npm version.
 
 ## License
 
-Apache-2.0. Source: <https://github.com/EBD-Sweden/agentsearch/tree/main/clients/npm-mcp>
+Apache-2.0. Source: <https://github.com/EvidInvest/aether-developer/tree/main/mcp>

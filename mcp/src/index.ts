@@ -16,8 +16,25 @@
  *   • If access expired but refresh valid, rotate via /v1/oauth/token.
  *   • If refresh expired/revoked, fall back to device flow again.
  *
+ * Aether splits its public surface across two hostnames:
+ *
+ *   • https://aether.evidinvest.com — MCP protocol + OAuth + account
+ *     creation + marketing site. This is where OAuth device-code, token,
+ *     and refresh endpoints live (`/v1/oauth/*`), along with the human
+ *     verification page (`/v1/oauth/device`).
+ *
+ *   • https://api.aether.evidinvest.com — search-engine API only.
+ *     `/v1/tools` (tool discovery) and `/v1/tools/<name>` (tool calls).
+ *
+ * AETHER_BASE_URL exists for back-compat: setting it overrides BOTH hosts.
+ * For finer control set AETHER_API_BASE_URL and AETHER_MCP_BASE_URL.
+ *
  * Environment:
- *   AETHER_BASE_URL       default https://api.aether.evidinvest.com
+ *   AETHER_API_BASE_URL   default https://api.aether.evidinvest.com
+ *                          — host for tool discovery + tool calls
+ *   AETHER_MCP_BASE_URL   default https://aether.evidinvest.com
+ *                          — host for OAuth (device, token, refresh) + account
+ *   AETHER_BASE_URL       deprecated: if set, overrides both of the above
  *   AETHER_CLIENT_ID      default 'aether-mcp-cli' (the trusted first-party client)
  *   AETHER_SCOPE          default 'aether.search aether.search.partners
  *                                  aether.partners.proxy aether.seller.read
@@ -38,14 +55,26 @@ import {
   type Tool,
 } from "@modelcontextprotocol/sdk/types.js";
 
-const BASE_URL = (process.env.AETHER_BASE_URL ?? "https://api.aether.evidinvest.com").replace(/\/$/, "");
+// AETHER_BASE_URL (back-compat) overrides both hosts when set. Otherwise the
+// API host and MCP host can be overridden independently.
+const LEGACY_BASE_URL = process.env.AETHER_BASE_URL?.replace(/\/$/, "") ?? "";
+const API_BASE_URL = (
+  LEGACY_BASE_URL ||
+  process.env.AETHER_API_BASE_URL ||
+  "https://api.aether.evidinvest.com"
+).replace(/\/$/, "");
+const MCP_BASE_URL = (
+  LEGACY_BASE_URL ||
+  process.env.AETHER_MCP_BASE_URL ||
+  "https://aether.evidinvest.com"
+).replace(/\/$/, "");
 const CLIENT_ID = process.env.AETHER_CLIENT_ID ?? "aether-mcp-cli";
 const SCOPE =
   process.env.AETHER_SCOPE ??
   "aether.search aether.search.partners aether.partners.proxy aether.seller.read aether.account.read";
 const LEGACY_API_KEY = process.env.AETHER_API_KEY ?? "";
 const NO_AUTH = process.env.AETHER_NO_AUTH === "1";
-const VERSION = "0.2.0";
+const VERSION = "0.3.0";
 
 // ---------------------------------------------------------------------------
 // Credentials file (~/.config/aether/credentials.json by default)
@@ -74,9 +103,10 @@ function loadCreds(): Credentials | null {
     if (!existsSync(p)) return null;
     const raw = readFileSync(p, "utf8");
     const c = JSON.parse(raw) as Credentials;
-    // Tokens are scoped to a base URL; if user changed AETHER_BASE_URL, force
-    // a new device flow rather than presenting tokens to a different server.
-    if (c.base_url !== BASE_URL) return null;
+    // Tokens are scoped to the MCP host they were issued against. If the user
+    // changed AETHER_MCP_BASE_URL (or AETHER_BASE_URL), force a new device flow
+    // rather than presenting tokens to a different server.
+    if (c.base_url !== MCP_BASE_URL) return null;
     return c;
   } catch {
     return null;
@@ -110,7 +140,7 @@ async function runDeviceFlow(): Promise<Credentials> {
   process.stderr.write(`[aether-mcp] no cached credentials — starting OAuth device flow\n`);
 
   // 1. /v1/oauth/device/code
-  const r1 = await fetch(`${BASE_URL}/v1/oauth/device/code`, {
+  const r1 = await fetch(`${MCP_BASE_URL}/v1/oauth/device/code`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ client_id: CLIENT_ID, scope: SCOPE }),
@@ -152,7 +182,7 @@ async function runDeviceFlow(): Promise<Credentials> {
   let interval = Math.max(1, dc.interval);
   while (Date.now() - startMs < dc.expires_in * 1000) {
     await new Promise((res) => setTimeout(res, interval * 1000));
-    const r2 = await fetch(`${BASE_URL}/v1/oauth/device/token`, {
+    const r2 = await fetch(`${MCP_BASE_URL}/v1/oauth/device/token`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
@@ -178,7 +208,7 @@ async function runDeviceFlow(): Promise<Credentials> {
         access_expires_at_ms: now + (body.expires_in ?? 3600) * 1000,
         refresh_expires_at_ms: now + (body.refresh_expires_in ?? 2_592_000) * 1000,
         scope: body.scope ?? SCOPE,
-        base_url: BASE_URL,
+        base_url: MCP_BASE_URL,
       };
       saveCreds(creds);
       process.stderr.write(`[aether-mcp] ✓ authorized; tokens cached at ${credsPath()}\n\n`);
@@ -201,7 +231,7 @@ async function runDeviceFlow(): Promise<Credentials> {
 }
 
 async function refreshTokens(c: Credentials): Promise<Credentials> {
-  const r = await fetch(`${BASE_URL}/v1/oauth/token`, {
+  const r = await fetch(`${MCP_BASE_URL}/v1/oauth/token`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
@@ -233,7 +263,7 @@ async function refreshTokens(c: Credentials): Promise<Credentials> {
     access_expires_at_ms: now + body.expires_in * 1000,
     refresh_expires_at_ms: now + body.refresh_expires_in * 1000,
     scope: body.scope,
-    base_url: BASE_URL,
+    base_url: MCP_BASE_URL,
   };
   saveCreds(next);
   return next;
@@ -270,12 +300,12 @@ interface ToolListResponse {
 async function fetchTools(token: string | null): Promise<Tool[]> {
   const headers: Record<string, string> = { accept: "application/json" };
   if (token) headers["authorization"] = `Bearer ${token}`;
-  const res = await fetch(`${BASE_URL}/v1/tools`, {
+  const res = await fetch(`${API_BASE_URL}/v1/tools`, {
     headers,
     signal: AbortSignal.timeout(10_000),
   });
   if (!res.ok) {
-    throw new Error(`tool discovery failed: HTTP ${res.status} from ${BASE_URL}/v1/tools`);
+    throw new Error(`tool discovery failed: HTTP ${res.status} from ${API_BASE_URL}/v1/tools`);
   }
   const data = (await res.json()) as ToolListResponse;
   if (!Array.isArray(data.tools)) {
@@ -289,7 +319,7 @@ async function callTool(name: string, args: Record<string, unknown>): Promise<un
   const headers: Record<string, string> = { "content-type": "application/json" };
   if (token) headers["authorization"] = `Bearer ${token}`;
   const doFetch = async (): Promise<Response> =>
-    fetch(`${BASE_URL}/v1/tools/${name}`, {
+    fetch(`${API_BASE_URL}/v1/tools/${name}`, {
       method: "POST",
       headers,
       body: JSON.stringify(args),
@@ -315,12 +345,12 @@ async function callTool(name: string, args: Record<string, unknown>): Promise<un
 
 async function main(): Promise<void> {
   // Health probe.
-  const healthRes = await fetch(`${BASE_URL}/healthz`, {
+  const healthRes = await fetch(`${API_BASE_URL}/healthz`, {
     signal: AbortSignal.timeout(5_000),
   }).catch(() => null);
   if (!healthRes || !healthRes.ok) {
     process.stderr.write(
-      `[aether-mcp] warning: ${BASE_URL}/healthz not OK at startup.\n`,
+      `[aether-mcp] warning: ${API_BASE_URL}/healthz not OK at startup.\n`,
     );
   }
 
@@ -338,11 +368,11 @@ async function main(): Promise<void> {
   try {
     tools = await fetchTools(token);
     process.stderr.write(
-      `[aether-mcp] ${VERSION}: discovered ${tools.length} tools from ${BASE_URL}\n`,
+      `[aether-mcp] ${VERSION}: discovered ${tools.length} tools from ${API_BASE_URL}\n`,
     );
   } catch (err) {
     process.stderr.write(
-      `[aether-mcp] FATAL: ${(err as Error).message}. Set AETHER_BASE_URL to override (default ${BASE_URL}).\n`,
+      `[aether-mcp] FATAL: ${(err as Error).message}. Set AETHER_API_BASE_URL to override (default ${API_BASE_URL}).\n`,
     );
     process.exit(2);
   }
@@ -380,7 +410,7 @@ async function main(): Promise<void> {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   process.stderr.write(
-    `[aether-mcp] stdio transport ready (${BASE_URL}; auth=${
+    `[aether-mcp] stdio transport ready (api=${API_BASE_URL}, mcp=${MCP_BASE_URL}; auth=${
       LEGACY_API_KEY ? "legacy_api_key" : NO_AUTH ? "none" : "oauth_device"
     })\n`,
   );
