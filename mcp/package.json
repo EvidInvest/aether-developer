@@ -1,6 +1,6 @@
 {
   "name": "@evidinvest/aether-mcp",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "mcpName": "io.github.EvidInvest/aether-developer",
   "description": "Aether MCP Server — financial-vertical agent search engine. Hybrid SEC filings (10-K/10-Q/8-K) + earnings transcripts retrieval over 1.4M+ chunks, plus a two-sided marketplace for third-party data. Tools: financial_search, transcript_search, list_partners, partner_search, partner_proxy_search, seller_signup, seller_publish_document, seller_register_endpoint, seller_list_my_documents, seller_list_my_endpoints. Connect Claude, Cursor, Cline, or any MCP client.",
   "keywords": [
