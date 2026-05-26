@@ -8,7 +8,8 @@ The repo holds two kinds of integration plus the docs that explain them:
 
 1. **MCP wrapper** — `@evidinvest/aether-mcp`. Drop it into Claude
    Desktop, Cursor, Cline, or any stdio-MCP client and you can search SEC
-   filings + earnings transcripts from chat.
+   filings, earnings transcripts, and EU financial regulation (MiFID II,
+   MiCA, CRR, GDPR, …) from chat.
 2. **Client libraries** — small typed HTTP clients in TypeScript / Python
    (and more languages over time). For when you're building your own
    service instead of using an MCP-aware UI.
@@ -78,6 +79,7 @@ Full guide: [`clients/python/README.md`](./clients/python/README.md).
 ## Docs
 
 - [`docs/search.md`](./docs/search.md) — request/response shapes, auth, schemas.
+- [`docs/regulation_search.md`](./docs/regulation_search.md) — EU financial-regulation search (MiFID II, MiCA, CRR, GDPR, … — 29 acts), filters, response shape, curl.
 - [`docs/mcp.md`](./docs/mcp.md) — MCP setup for Claude Desktop, Cursor, Cline, env overrides.
 
 ## Get an API key
