@@ -14,6 +14,14 @@ Pass it as `Authorization: Bearer <token>`.
 
 Anonymous calls work but are rate-limited.
 
+## Rate limits & free trial
+
+Verify your email and you're put on the **trial tier** automatically: up to
+**5,000 calls/hour** on Aether's search tools, free for **3 months**, no card
+required. When the trial ends you revert to the free tier (100 calls/hour plus
+any paid credits). Start at
+https://aether.evidinvest.com/developer/register.
+
 ## Request
 
 ```http

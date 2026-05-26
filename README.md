@@ -84,6 +84,11 @@ Full guide: [`clients/python/README.md`](./clients/python/README.md).
 
 https://aether.evidinvest.com/developer/keys
 
+**3 months free.** Verify your email when you sign up and you're on the trial
+tier automatically — up to 5,000 API calls/hour on Aether's search tools, free
+for 3 months. No card required; it reverts to the free tier (100 calls/hour +
+paid credits) when the trial ends.
+
 ## Contribute a client library
 
 The TypeScript and Python clients are intentionally tiny — one bearer-token
