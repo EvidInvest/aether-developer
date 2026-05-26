@@ -1,6 +1,6 @@
 {
   "name": "Aether",
-  "description": "Aether MCP Server — financial-vertical agent search engine. Hybrid SEC filings (10-K/10-Q/8-K) + earnings transcripts retrieval over 1.4M+ chunks, plus a two-sided marketplace for third-party data. Tools: financial_search, transcript_search, list_partners, partner_search, partner_proxy_search, seller_signup, seller_publish_document, seller_register_endpoint, seller_list_my_documents, seller_list_my_endpoints. Connect Claude, Cursor, Cline, or any MCP client.",
+  "description": "Aether MCP Server — financial-vertical agent search engine. Hybrid retrieval over SEC filings (10-K/10-Q/8-K) + earnings transcripts (1.4M+ chunks) and the EU financial-regulation canon (29 acts — MiFID II, MiCA, CRR, DORA, SFDR, GDPR, the AML package, …), plus a two-sided marketplace for third-party data. Tools: financial_search, transcript_search, regulation_search, list_partners, partner_search, partner_proxy_search, seller_signup, seller_publish_document, seller_register_endpoint, seller_list_my_documents, seller_list_my_endpoints. Connect Claude, Cursor, Cline, or any MCP client.",
   "version": "0.2.0",
   "type": "mcp",
   "config": {
