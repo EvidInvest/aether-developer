@@ -25,6 +25,14 @@ aether-developer/
 
 ## Quick start
 
+### Cursor (one-click)
+
+The hosted server speaks OAuth, so this installs with no API key:
+
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=Aether&config=eyJ1cmwiOiJodHRwczovL2FldGhlci5ldmlkaW52ZXN0LmNvbS9tY3AifQ==)
+
+Full Cursor guide (manual config, stdio fallback, tool list): [`docs/cursor.md`](./docs/cursor.md).
+
 ### Claude Desktop / Cursor / Cline (MCP)
 
 Add this to your client's MCP-server config:
