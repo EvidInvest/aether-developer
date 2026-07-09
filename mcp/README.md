@@ -2,7 +2,7 @@
 
 Stdio MCP server for Aether. One-line install for Claude Desktop, Cursor, Cline, Continue — anything that spawns an MCP server as a subprocess over stdio.
 
-> Aether is a financial-vertical agent search engine + marketplace: hybrid SEC filings + earnings-transcript retrieval over 1.4M+ chunks, plus a two-sided marketplace for third-party data.
+> Aether is a financial-vertical agent search engine + marketplace: hybrid retrieval over SEC filings + earnings transcripts (1.4M+ chunks) and the EU financial-regulation canon (29 acts — MiFID II, MiCA, CRR, DORA, GDPR, …), plus a two-sided marketplace for third-party data.
 
 ## Public surface — two hosts
 
@@ -84,6 +84,7 @@ Auto-discovered on startup from `${AETHER_API_BASE_URL}/v1/tools` (defaults to `
 |---|---|
 | `financial_search` | Hybrid SEC filing retrieval (BM25 + 256-d arctic-embed + cross-encoder rerank) |
 | `transcript_search` | Earnings-call transcript segment search |
+| `regulation_search` | EU financial-regulation search — 29-act canon (MiFID II, MiCA, CRR, CRD, DORA, SFDR, GDPR, AML package, …); citable Article-paragraphs/recitals with EUR-Lex breadcrumbs. [Docs](../docs/regulation_search.md) |
 | `list_partners` | List marketplace sellers + per-call prices |
 | `partner_search` | Search a partner's indexed corpus (Mode A, free) |
 | `partner_proxy_search` | Route query to partner's API server-to-server (Mode B, per-call paid) |
@@ -115,7 +116,7 @@ Auto-discovered on startup from `${AETHER_API_BASE_URL}/v1/tools` (defaults to `
 } | npx -y @evidinvest/aether-mcp
 ```
 
-Expected: handshake reply on stdout, plus a `tools/list` response with 10 tool definitions.
+Expected: handshake reply on stdout, plus a `tools/list` response with 11 tool definitions.
 
 ## Architecture
 

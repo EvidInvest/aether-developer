@@ -83,6 +83,10 @@ sign in at https://aether.evidinvest.com, approve. The token is cached in
 
 Working snippets: [`examples/claude-desktop/`](../examples/claude-desktop/).
 
+The stdio wrapper auto-discovers every tool from
+`${AETHER_BASE_URL}/v1/tools` on startup, so new tools appear without a
+package update.
+
 ### Environment overrides (stdio only)
 
 | Var | Default | Purpose |
@@ -102,7 +106,7 @@ Working snippets: [`examples/claude-desktop/`](../examples/claude-desktop/).
 |---|---|---|
 | `financial_search` | SEC filings (10-K/10-Q/8-K, S-1/424B prospectuses, press exhibits; ~10y S&P 500 +) **plus** non-US registries — Sweden/Bolagsverket, Japan/EDINET, Korea/DART | "Apple's supplier-concentration risk, with the exact 10-K passage" |
 | `transcript_search` | Earnings-call transcripts + furnished press exhibits, speaker-attributed, point-in-time filters | "When did NVIDIA management first mention Blackwell? Earliest mention" |
-| `regulation_search` | EU financial regulation — MiFID II, MiCA, DORA, the AML package — article-level | "MiCA's requirements for stablecoin issuers, cite the article" |
+| `regulation_search` | EU financial regulation — 29 acts (MiFID II, MiFIR, MAR, MiCA, CRR, CRD, DORA, SFDR, GDPR, the AML package, …) — article-level; see [`regulation_search.md`](./regulation_search.md) | "MiCA's requirements for stablecoin issuers, cite the article" |
 | `list_partners`, `partner_search`, `partner_proxy_search` | Marketplace: partner corpora (check per-call credit cost via `list_partners` first) | — |
 | `seller_*` | Publish your own corpus/endpoint into the marketplace | — |
 

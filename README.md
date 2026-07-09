@@ -99,6 +99,14 @@ curl -sS https://api.aether.evidinvest.com/v1/tools/financial_search \
   -d '{"query":"supply chain risk Taiwan","limit":5}' | jq .
 ```
 
+## Docs
+
+- [`docs/search.md`](./docs/search.md) — REST API reference: all three tools, params, response shape.
+- [`docs/regulation_search.md`](./docs/regulation_search.md) — EU financial-regulation search deep-dive (29 acts), filters, curl.
+- [`docs/mcp.md`](./docs/mcp.md) — connect any MCP client (remote URL or stdio), env overrides.
+- [`docs/chatgpt.md`](./docs/chatgpt.md) — ChatGPT Developer Mode walkthrough.
+- [`docs/cursor.md`](./docs/cursor.md) — Cursor one-click install.
+
 ## Get an API key
 
 https://aether.evidinvest.com/developer/keys — anonymous calls work but are
@@ -115,6 +123,11 @@ rate-limited; keys are free.
   mentions).
 - **EU regulation** — MiFID II, MiCA, DORA, the AML package; article-level
   citations.
+
+**3 months free.** Verify your email when you sign up and you're on the trial
+tier automatically — up to 5,000 API calls/hour on Aether's search tools, free
+for 3 months. No card required; it reverts to the free tier (100 calls/hour +
+paid credits) when the trial ends.
 
 ## Contribute a client library
 
