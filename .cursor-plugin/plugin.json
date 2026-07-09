@@ -1,0 +1,17 @@
+{
+  "name": "aether",
+  "displayName": "Aether",
+  "description": "The search engine whose user is an agent. Aether returns citation-complete payloads — exact SEC section text, form type, filing date, accession-numbered citation, sec.gov source URL, confidence score — for SEC filings (10-K/10-Q/8-K, S&P 500 x 10y, 1.4M+ chunks), earnings-call transcripts (by speaker turn), and a 29-act EU financial-regulation corpus (MiFID II, MiCA, DORA, AML). Hybrid retrieval (BM25 + dense + cross-encoder + ticker-aware boosting) plus a two-sided financial-data marketplace. Free 3-month trial, no card.",
+  "version": "0.3.2",
+  "author": "EvidInvest",
+  "homepage": "https://aether.evidinvest.com",
+  "repository": "https://github.com/EvidInvest/aether-developer",
+  "license": "Apache-2.0",
+  "categories": ["mcp", "finance", "search", "data"],
+  "keywords": ["sec", "edgar", "10-K", "earnings", "transcripts", "financial-data", "rag", "agent"],
+  "mcpServers": {
+    "aether": {
+      "url": "https://aether.evidinvest.com/mcp"
+    }
+  }
+}

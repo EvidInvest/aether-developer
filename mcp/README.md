@@ -41,7 +41,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) o
 }
 ```
 
-For higher rate limits + paid marketplace access, add your Aether API key:
+For higher rate limits + paid marketplace access, add your own Aether API key. Do not paste shared, demo, benchmark, or production keys into public docs:
 
 ```json
 {
@@ -50,7 +50,7 @@ For higher rate limits + paid marketplace access, add your Aether API key:
       "command": "npx",
       "args": ["-y", "@evidinvest/aether-mcp"],
       "env": {
-        "AETHER_API_KEY": "aether_ak_…"
+        "AETHER_API_KEY": "<YOUR_AETHER_API_KEY>"
       }
     }
   }
@@ -101,7 +101,7 @@ Auto-discovered on startup from `${AETHER_API_BASE_URL}/v1/tools` (defaults to `
 | `AETHER_API_BASE_URL` | `https://api.aether.evidinvest.com` | Override host for tool calls (`/v1/tools/*`). Use `http://localhost:8787` for local dev. |
 | `AETHER_MCP_BASE_URL` | `https://aether.evidinvest.com` | Override host for OAuth + account creation (`/v1/oauth/*`, `/v1/agent/*`). Use `http://localhost:8787` for local dev. |
 | `AETHER_BASE_URL` | _deprecated_ | If set, overrides BOTH hosts. Kept for back-compat with `aether-mcp@0.2.x`. |
-| `AETHER_API_KEY` | `(empty)` | If set, attached as `Authorization: Bearer <key>` to every tool call. Use a seller key (`aether_sk_…`) for seller actions OR an agent key (`aether_ak_…`) for higher search rate limits + paid proxy access. |
+| `AETHER_API_KEY` | `(empty)` | Optional key attached as `Authorization: Bearer ***` to every tool call. Use an agent key for higher search rate limits and paid proxy access, or a seller key for seller actions. Generate your own key in the Aether dashboard; never reuse keys copied from docs, benchmarks, or examples. |
 
 ## Smoke-test from the command line
 

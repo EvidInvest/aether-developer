@@ -1,17 +1,17 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.EvidInvest/aether-developer",
-  "description": "Hybrid search over SEC filings, earnings transcripts, the EU financial-regulation canon (MiFID II, MiCA, CRR, GDPR, …), and a third-party data marketplace.",
+  "description": "Agent-native search engine for SEC filings (10-K/10-Q/8-K, S&P 500 x 10y), earnings-call transcripts, and EU financial regulation. Every result is a citation-complete payload — exact section text, accession-numbered citation, sec.gov source URL — ready to use as evidence, no HTML parsing. Hybrid retrieval (BM25 + dense + cross-encoder) plus a two-sided financial-data marketplace. Free 3-month trial, no card.",
   "repository": {
     "url": "https://github.com/EvidInvest/aether-developer",
     "source": "github"
   },
-  "version": "0.3.1",
+  "version": "0.3.2",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@evidinvest/aether-mcp",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "transport": {
         "type": "stdio"
       },

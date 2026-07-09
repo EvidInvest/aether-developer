@@ -55,26 +55,16 @@ import {
   type Tool,
 } from "@modelcontextprotocol/sdk/types.js";
 
-// AETHER_BASE_URL (back-compat) overrides both hosts when set. Otherwise the
-// API host and MCP host can be overridden independently.
-const LEGACY_BASE_URL = process.env.AETHER_BASE_URL?.replace(/\/$/, "") ?? "";
-const API_BASE_URL = (
-  LEGACY_BASE_URL ||
-  process.env.AETHER_API_BASE_URL ||
-  "https://api.aether.evidinvest.com"
-).replace(/\/$/, "");
-const MCP_BASE_URL = (
-  LEGACY_BASE_URL ||
-  process.env.AETHER_MCP_BASE_URL ||
-  "https://aether.evidinvest.com"
-).replace(/\/$/, "");
-const CLIENT_ID = process.env.AETHER_CLIENT_ID ?? "aether-mcp-cli";
-const SCOPE =
-  process.env.AETHER_SCOPE ??
-  "aether.search aether.search.partners aether.partners.proxy aether.seller.read aether.account.read";
-const LEGACY_API_KEY = process.env.AETHER_API_KEY ?? "";
-const NO_AUTH = process.env.AETHER_NO_AUTH === "1";
-const VERSION = "0.3.1";
+// Host/scope/auth resolution is shared with the HTTP gateway — see config.ts.
+import {
+  API_BASE_URL,
+  MCP_BASE_URL,
+  CLIENT_ID,
+  SCOPE,
+  LEGACY_API_KEY,
+  NO_AUTH,
+  VERSION,
+} from "./config.js";
 
 // ---------------------------------------------------------------------------
 // Credentials file (~/.config/aether/credentials.json by default)
