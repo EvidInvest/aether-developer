@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "aether-sdk"
+name = "evidinvest-aether-sdk"
 version = "0.2.0"
 description = "Python client for the Aether REST API — financial-vertical agent search engine."
 readme = "README.md"

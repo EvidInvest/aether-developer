@@ -153,6 +153,6 @@ Errors are JSON: `400 {"error":"invalid_input", "details":…}`,
 | Language | Install | Docs |
 |---|---|---|
 | TypeScript / Node | `pnpm add @evidinvest/aether-sdk` | [`clients/typescript`](../clients/typescript/README.md) |
-| Python | `pip install aether-sdk` | [`clients/python`](../clients/python/README.md) |
+| Python | `pip install evidinvest-aether-sdk` | [`clients/python`](../clients/python/README.md) |
 | Anything else | plain HTTP (above) — a client is ~150 lines, PRs welcome | [`clients/`](../clients/) |
 | MCP (ChatGPT / Claude / Cursor) | remote URL or `npx -y @evidinvest/aether-mcp` | [`mcp.md`](./mcp.md) |

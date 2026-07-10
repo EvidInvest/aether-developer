@@ -19,7 +19,7 @@ aether-developer/
 ├── mcp/                 — @evidinvest/aether-mcp (stdio MCP server, npm)
 ├── clients/
 │   ├── typescript/      — @evidinvest/aether-sdk (npm)
-│   └── python/          — aether-sdk (PyPI)
+│   └── python/          — evidinvest-aether-sdk (PyPI)
 └── examples/            — runnable demos + config snippets
 ```
 
@@ -78,7 +78,7 @@ for (const c of out.results) console.log(c.citation, c.metadata?.source_url);
 ### Python
 
 ```bash
-pip install aether-sdk
+pip install evidinvest-aether-sdk
 ```
 
 ```python

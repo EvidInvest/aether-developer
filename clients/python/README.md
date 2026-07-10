@@ -8,7 +8,7 @@ hit a ready-to-cite payload (exact source text + accession-numbered citation
 ## Install
 
 ```bash
-pip install aether-sdk
+pip install evidinvest-aether-sdk
 ```
 
 ## Use
