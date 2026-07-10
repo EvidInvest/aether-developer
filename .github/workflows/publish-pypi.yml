@@ -1,0 +1,33 @@
+# Publish clients/python (aether-sdk) to PyPI via Trusted Publishing (OIDC).
+# No API tokens: PyPI trusts this exact repo+workflow+environment combination
+# (configured at pypi.org → Publishing → pending publisher for `aether-sdk`).
+#
+# Trigger: push a tag like `python-v0.2.0`, or run manually from the Actions tab.
+name: publish-pypi
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["python-v*"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write   # OIDC token for PyPI — this is the whole auth story
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build sdist + wheel
+        working-directory: clients/python
+        run: |
+          python -m pip install --quiet build
+          python -m build
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: clients/python/dist
