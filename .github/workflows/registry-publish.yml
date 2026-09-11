@@ -1,0 +1,27 @@
+name: Publish to MCP Registry
+# Publishes mcp/server.json to registry.modelcontextprotocol.io using GitHub Actions
+# OIDC, which the registry accepts for io.github.EvidInvest/* (the OAuth device login
+# only ever saw the personal namespace, 2026-09-11). Run after the npm publish:
+#   gh workflow run registry-publish.yml
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install mcp-publisher
+        run: |
+          curl -sL "https://github.com/modelcontextprotocol/registry/releases/download/v1.8.1/mcp-publisher_linux_amd64.tar.gz" | tar xz
+          sudo mv mcp-publisher /usr/local/bin/
+          mcp-publisher --version
+      - name: Publish
+        working-directory: mcp
+        run: |
+          mcp-publisher login github-oidc
+          mcp-publisher publish
