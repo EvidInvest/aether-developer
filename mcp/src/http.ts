@@ -10,7 +10,7 @@
  * passed through as anonymous (the API rate-limits it).
  *
  * It does no search itself — it translates MCP <-> the same `/v1/tools` API the
- * stdio server uses, which is backed by Vespa.
+ * stdio server uses, which is backed by Postgres + pgvector.
  *
  * Routes:
  *   POST /mcp      MCP Streamable HTTP (stateless: one transport per request)

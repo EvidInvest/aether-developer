@@ -1,0 +1,58 @@
+{
+  "query": "",
+  "mode": "fetch",
+  "domain": "auto",
+  "results": [
+    {
+      "id": "0001045810-26-000075-item-1",
+      "text": "Item 1. Financial Statements (Unaudited) NVIDIA Corporation and Subsidiaries Condensed Consolidated Statements of Income (In millions, except per share data) (Unaudited) Three Months Ended Six Months Ended Jul 26, 2026 Jul 27, 2025 Jul 26, …",
+      "source": "sec/10-Q/0001045810-26-000075",
+      "citation": "NVDA 10-Q 2026-08-26 (Item 1)",
+      "as_of_date": "2026-08-26",
+      "metadata": {
+        "cik": "0001045810",
+        "ticker": "NVDA",
+        "company_name": "NVIDIA CORP",
+        "jurisdiction": "US",
+        "source_feed": "sec",
+        "form_type": "10-Q",
+        "period_of_report": "2026-07-26",
+        "section": "Item 1",
+        "parent_section_id": "0001045810-26-000075-item-1",
+        "accession_number": "0001045810-26-000075",
+        "chunk_id": "0001045810-26-000075-item-1-0000",
+        "chunk_index": 0,
+        "chunk_total": 67,
+        "is_section_complete": false,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000075/nvda-20260726.htm",
+        "retrieval": {
+          "mode": "fetch",
+          "profile": "hybrid",
+          "ranking": "bm25_default",
+          "explicit_ciks": [
+            "0001045810"
+          ],
+          "form_filter": [
+            "10-Q"
+          ],
+          "issuer_how": "explicit_ticker",
+          "fiscal_year_semantics": "dei_fiscal_year_focus",
+          "fiscal_years_searched": [
+            2027
+          ],
+          "candidate_pool": 16,
+          "dedupe_dropped": 0,
+          "junk_dropped": 0,
+          "accessions_in_topk": 1,
+          "vespa_step_ms": 711,
+          "vespa_total": 128,
+          "rel": 0
+        }
+      }
+    }
+  ],
+  "scope": "issuer",
+  "total": 128,
+  "source": "aether-pg-fetch",
+  "latency_ms": 896
+}

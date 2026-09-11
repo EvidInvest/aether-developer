@@ -1,0 +1,101 @@
+{
+  "query": "data center revenue growth drivers",
+  "mode": "search",
+  "domain": "auto",
+  "results": [
+    {
+      "id": "0001045810-26-000075-item-2",
+      "text": "expertise is critical: Data Center and Edge Computing. Three Months Ended Quarter-over-Quarter Change Year-over-Year Change Jul 26, 2026 Apr 26, 2026 Jul 27, 2025 ($ in millions) Revenue by Market Platform (1) (2) Data Center $ 89,023 $ 75,…",
+      "source": "sec/10-Q/0001045810-26-000075",
+      "citation": "NVDA 10-Q 2026-08-26 (Item 2)",
+      "as_of_date": "2026-08-26",
+      "confidence": 0.528139660845051,
+      "metadata": {
+        "cik": "0001045810",
+        "ticker": "NVDA",
+        "company_name": "NVIDIA CORP",
+        "jurisdiction": "US",
+        "source_feed": "sec",
+        "form_type": "10-Q",
+        "period_of_report": "2026-07-26",
+        "section": "Item 2",
+        "parent_section_id": "0001045810-26-000075-item-2",
+        "accession_number": "0001045810-26-000075",
+        "chunk_id": "0001045810-26-000075-item-2-0007",
+        "chunk_index": 7,
+        "chunk_total": 67,
+        "is_section_complete": false,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000075/nvda-20260726.htm",
+        "retrieval": {
+          "mode": "search",
+          "profile": "hybrid",
+          "ranking": "hybrid",
+          "explicit_ciks": [
+            "0001045810"
+          ],
+          "issuer_how": "explicit_ticker",
+          "fiscal_year_semantics": "dei_fiscal_year_focus",
+          "fiscal_years_searched": [
+            2027
+          ],
+          "candidate_pool": 150,
+          "dedupe_dropped": 131,
+          "junk_dropped": 1,
+          "accessions_in_topk": 2,
+          "vespa_step_ms": 565,
+          "vespa_total": 415,
+          "rel": 0.27893150135752554
+        }
+      }
+    },
+    {
+      "id": "0001045810-26-000052-item-2",
+      "text": "diluted share $ 2.39 $ 1.76 $ 0.76 36 % 214 % We specialize in markets where our computing platforms can provide tremendous acceleration for applications. These platforms incorporate processors, interconnects, software, algorithms, systems,…",
+      "source": "sec/10-Q/0001045810-26-000052",
+      "citation": "NVDA 10-Q 2026-05-20 (Item 2)",
+      "as_of_date": "2026-05-20",
+      "confidence": 0.48684955444665523,
+      "metadata": {
+        "cik": "0001045810",
+        "ticker": "NVDA",
+        "company_name": "NVIDIA CORP",
+        "jurisdiction": "US",
+        "source_feed": "sec",
+        "form_type": "10-Q",
+        "period_of_report": "2026-04-26",
+        "section": "Item 2",
+        "parent_section_id": "0001045810-26-000052-item-2",
+        "accession_number": "0001045810-26-000052",
+        "chunk_id": "0001045810-26-000052-item-2-0004",
+        "chunk_index": 4,
+        "chunk_total": 61,
+        "is_section_complete": false,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000052/nvda-20260426.htm",
+        "retrieval": {
+          "mode": "search",
+          "profile": "hybrid",
+          "ranking": "hybrid",
+          "explicit_ciks": [
+            "0001045810"
+          ],
+          "issuer_how": "explicit_ticker",
+          "fiscal_year_semantics": "dei_fiscal_year_focus",
+          "fiscal_years_searched": [
+            2027
+          ],
+          "candidate_pool": 150,
+          "dedupe_dropped": 131,
+          "junk_dropped": 1,
+          "accessions_in_topk": 2,
+          "vespa_step_ms": 565,
+          "vespa_total": 415,
+          "rel": 0.26138148058015853
+        }
+      }
+    }
+  ],
+  "scope": "issuer",
+  "total": 415,
+  "source": "aether-pg-hybrid",
+  "latency_ms": 1074
+}

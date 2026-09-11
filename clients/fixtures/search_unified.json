@@ -1,0 +1,77 @@
+{
+  "query": "data center revenue",
+  "mode": "search",
+  "results": [
+    {
+      "id": "0001045810-24-000029-item-7-0005",
+      "corpus": "sec",
+      "corpus_label": "SEC Filings",
+      "citation": "NVDA 10-K 2024-02-21 (Item 7)",
+      "text": "services to deliver unique value. Our platforms address four large markets where our expertise is critical: Data Center, Gaming, Professional Visualization, and Automotive. Revenue for fiscal year 2024 was $60.9 billion, up 126% from a year…",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000029/nvda-20240128.htm",
+      "confidence": 0.5669927702396137,
+      "as_of_date": "2024-02-21",
+      "anchor_id": "0001045810-24-000029-item-7-0005",
+      "context_token": "xNk0bc33U71hFpIBG3uLXb3R2qqIKy0A6Astb77tbQw.MDAwMTA0NTgxMC0yNC0wMDAwMjktaXRlbS03LTAwMDV8c2VjfDE3ODkxNTgxNDc",
+      "diagnostics": {
+        "candidate_pool": 150,
+        "dedupe_dropped": 80,
+        "junk_dropped": 0,
+        "mode": "search",
+        "issuer_how": "explicit_ticker"
+      },
+      "meta": {
+        "jurisdiction": "US",
+        "source_feed": "sec",
+        "form_type": "10-K",
+        "ticker": "NVDA",
+        "company_name": "NVIDIA CORP",
+        "section": "Item 7",
+        "chunk_id": "0001045810-24-000029-item-7-0005",
+        "parent_section_id": "",
+        "accession_number": "0001045810-24-000029",
+        "chunk_index": 5,
+        "chunk_total": 162,
+        "is_section_complete": false,
+        "filed_at": "2024-02-21"
+      }
+    },
+    {
+      "id": "0001045810-26-000075-item-2",
+      "corpus": "sec",
+      "corpus_label": "SEC Filings",
+      "citation": "NVDA 10-Q 2026-08-26 (Item 2)",
+      "text": "expertise is critical: Data Center and Edge Computing. Three Months Ended Quarter-over-Quarter Change Year-over-Year Change Jul 26, 2026 Apr 26, 2026 Jul 27, 2025 ($ in millions) Revenue by Market Platform (1) (2) Data Center $ 89,023 $ 75,…",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000075/nvda-20260726.htm",
+      "confidence": 0.4998064228131588,
+      "as_of_date": "2026-08-26",
+      "anchor_id": "0001045810-26-000075-item-2-0007",
+      "context_token": "-i2DJsILnaztaAE972m7pNYVSim4wPM2Qs1q_sixAyA.MDAwMTA0NTgxMC0yNi0wMDAwNzUtaXRlbS0yLTAwMDd8c2VjfDE3ODkxNTgxNDc",
+      "diagnostics": {
+        "candidate_pool": 150,
+        "dedupe_dropped": 80,
+        "junk_dropped": 0,
+        "mode": "search",
+        "issuer_how": "explicit_ticker"
+      },
+      "meta": {
+        "jurisdiction": "US",
+        "source_feed": "sec",
+        "form_type": "10-Q",
+        "ticker": "NVDA",
+        "company_name": "NVIDIA CORP",
+        "section": "Item 2",
+        "chunk_id": "0001045810-26-000075-item-2-0007",
+        "parent_section_id": "0001045810-26-000075-item-2",
+        "accession_number": "0001045810-26-000075",
+        "chunk_index": 7,
+        "chunk_total": 67,
+        "is_section_complete": false,
+        "filed_at": "2026-08-26"
+      }
+    }
+  ],
+  "total": 2,
+  "latency_ms": 1082,
+  "scope": "issuer"
+}

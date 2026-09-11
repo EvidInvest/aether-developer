@@ -104,16 +104,29 @@ package update.
 
 | Tool | What it searches | Typical ask |
 |---|---|---|
+| `search` | Everything at once — filings, Japan/EDINET, Korea/DART, EU regulation, earnings calls — auto-routed and corpus-tagged. Start here | "What is NVIDIA saying about data-center demand this fiscal year?" |
 | `financial_search` | SEC filings (10-K/10-Q/8-K, S-1/424B prospectuses, press exhibits; ~10y S&P 500 +) **plus** non-US registries — Sweden/Bolagsverket, Japan/EDINET, Korea/DART | "Apple's supplier-concentration risk, with the exact 10-K passage" |
 | `transcript_search` | Earnings-call transcripts + furnished press exhibits, speaker-attributed, point-in-time filters | "When did NVIDIA management first mention Blackwell? Earliest mention" |
 | `regulation_search` | EU financial regulation — 29 acts (MiFID II, MiFIR, MAR, MiCA, CRR, CRD, DORA, SFDR, GDPR, the AML package, …) — article-level; see [`regulation_search.md`](./regulation_search.md) | "MiCA's requirements for stablecoin issuers, cite the article" |
 | `list_partners`, `partner_search`, `partner_proxy_search` | Marketplace: partner corpora (check per-call credit cost via `list_partners` first) | — |
+| `holdings_by_security`, `holdings_by_manager` | 13F ownership — who owns a stock, what a fund owns. Ownership questions never go through search | "Who added to NVDA last quarter?" |
 | `seller_*` | Publish your own corpus/endpoint into the marketplace | — |
 
 Every hit is a ready-to-cite payload: exact source text, accession-numbered
 citation, sec.gov (or EUR-Lex) URL, and a confidence score. No web scraping,
 no HTML parsing — if it's not in a filing, Aether says so instead of
 hallucinating.
+
+**Name the company in your question.** Every company tool takes an `issuer`,
+and naming it is what makes the answer scoped to that filer rather than a
+relevance-ranked sweep of every filer — the agent then reads `scope` and
+`quality_caveat` off the response to know which it got. If you already know the
+document ("the latest 10-K"), the agent can fetch it by name instead of
+searching for it: no ranking, and the sections come back in filing order.
+
+One caveat worth knowing: this stdio wrapper fetches the tool definitions once
+at startup, so **restart your client after an Aether contract change** or it
+keeps using the old descriptions.
 
 Prefer raw REST? The same tools are plain HTTP endpoints — see
 [`search.md`](./search.md).

@@ -1,7 +1,7 @@
 {
   "name": "Aether",
-  "description": "Aether MCP Server — the search engine whose user is an agent. Search results aren't pages for humans: they're pre-processed, citation-complete payloads (exact SEC section text, form type, filing date, accession-numbered citation, sec.gov source URL, confidence score) that agents can use as evidence directly. Corpus: SEC filings (10-K/10-Q/8-K, registration statements, press exhibits; S&P 500 x 10 years, 1.4M+ chunks), earnings-call transcripts by speaker turn, and a 29-act EU financial-regulation corpus (MiFID II, MiCA, DORA, AML package) with article-level citations. Hybrid retrieval: BM25 + dense vectors + cross-encoder reranking + ticker-aware boosting. Tools: financial_search, transcript_search, regulation_search, list_partners, partner_search, partner_proxy_search, seller_signup, seller_publish_document, seller_register_endpoint, seller_list_my_documents, seller_list_my_endpoints. Two-sided marketplace: sellers publish documents or register paid proxy endpoints; agents discover and budget via list_partners. Connect Claude, Cursor, Cline, or any MCP client.",
-  "version": "0.3.2",
+  "description": "Aether MCP Server — the search engine whose user is an agent. Search results aren't pages for humans: they're pre-processed, citation-complete payloads (exact SEC section text, form type, filing date, accession-numbered citation, sec.gov source URL, confidence score) that agents can use as evidence directly. Corpus: SEC filings (10-K/10-Q/8-K, registration statements, press exhibits; S&P 500 x 10 years, 1.4M+ chunks), earnings-call transcripts by speaker turn, and a 29-act EU financial-regulation corpus (MiFID II, MiCA, DORA, AML package) with article-level citations. Hybrid retrieval: BM25 + dense vectors fused into one score, issuer-scoped — name the company on every call and the answer is filtered, fast and precise; omit it and the response says so in `quality_caveat`. Tools: search (unified), financial_search, transcript_search, regulation_search, holdings_by_security, holdings_by_manager, list_partners, partner_search, partner_proxy_search, seller_signup, seller_publish_document, seller_register_endpoint, seller_list_my_documents, seller_list_my_endpoints. Two-sided marketplace: sellers publish documents or register paid proxy endpoints; agents discover and budget via list_partners. Connect Claude, Cursor, Cline, or any MCP client.",
+  "version": "0.3.3",
   "type": "mcp",
   "config": {
     "command": "npx",
@@ -22,22 +22,27 @@
     {
       "name": "sec-deep-dive",
       "description": "Search SEC filings for a topic on a specific company",
-      "template": "Search Aether's SEC filings for {{topic}} on {{ticker}}. Pull the most relevant 10-K / 10-Q / 8-K sections, then summarize the key risks and any forward-looking statements."
+      "template": "Call Aether financial_search with issuer: {\"ticker\": \"{{ticker}}\"} and query: \"{{topic}}\" — put the company in `issuer`, never in the query text. Confirm the response came back with scope \"issuer\" and no quality_caveat before you use it. Then summarize the key risks and any forward-looking statements, quoting each passage with its citation and sec.gov link, and crop every excerpt from the hit's body_offset so you do not quote the EDGAR cover page."
+    },
+    {
+      "name": "latest-filing-sections",
+      "description": "Fetch a company's latest 10-K sections in filing order (no ranking)",
+      "template": "Fetch the latest 10-K sections for {{ticker}} — do not search. Call Aether financial_search with issuer: {\"ticker\": \"{{ticker}}\"} and form_type: [\"10-K\"] and NO query at all; omitting the query selects fetch mode, which returns the filing's sections in filing order with no ranking and no confidence scores. Add section: \"{{section}}\" to narrow to one part. Check that mode came back as \"fetch\", then walk the sections in the order given."
     },
     {
       "name": "earnings-narrative",
       "description": "Pull earnings-call commentary on a topic",
-      "template": "Search Aether's earnings-call transcripts for {{topic}} (last {{quarters}} quarters) and quote CEO/CFO commentary verbatim with the call date + speaker."
+      "template": "Call Aether transcript_search with issuer: {\"ticker\": \"{{ticker}}\"} and query: \"{{topic}}\", narrowed with fiscal_year: {{fiscal_year}} — that is the issuer's own fiscal year as the company labels it, not the calendar year of the call. To read one whole call in spoken order instead, drop the query and pass quarter: \"{{quarter}}\" as well. Quote CEO/CFO commentary verbatim with the call date and the speaker's name."
     },
     {
       "name": "supply-chain-exposure",
-      "description": "Find companies exposed to a supply-chain risk",
-      "template": "Use Aether financial_search to find recent SEC filings discussing exposure to {{risk}}. Group results by ticker, show the most relevant chunk per ticker, and rank by recency + relevance score."
+      "description": "Find companies exposed to a supply-chain risk (cross-company, caveated)",
+      "template": "This question spans many filers, so it is a deliberate cross-company call: Aether financial_search with query: \"{{risk}}\" and scope: \"cross_company\" and no issuer. Expect it to be slower (budget 20 s) and to come back with a quality_caveat — results span all issuers and are ranked by relevance only, so state that caveat in your answer rather than presenting the list as complete. Group hits by ticker, show the most relevant passage per ticker with its citation, and then re-run scope \"issuer\" on any company worth a closer look."
     },
     {
       "name": "competitive-mentions",
       "description": "How does company A talk about competitor B in their filings",
-      "template": "Search Aether's SEC corpus for any mention of {{competitor}} in {{ticker}}'s recent filings. Quote the passage and give the section/filing/date."
+      "template": "Call Aether financial_search with issuer: {\"ticker\": \"{{ticker}}\"} and query: \"{{competitor}}\" — the company whose filings you are reading goes in `issuer`, the competitor goes in the query. Naming both in the query text instead lets the engine guess the filer and it can guess wrong. Quote each passage and give the section, filing and date."
     }
   ]
 }

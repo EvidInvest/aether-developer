@@ -81,7 +81,8 @@ All filters are top-level and optional — omit them to search the whole corpus.
     }
   ],
   "total": 399,
-  "source": "aether-vespa-regulation-hybrid",
+  "source": "aether-pg-regulation-hybrid",
+  "scope": "issuer",
   "latency_ms": 380
 }
 ```
@@ -89,6 +90,15 @@ All filters are top-level and optional — omit them to search the whole corpus.
 When you pass a `celex` filter, the normalized list is echoed back as a
 top-level `celex_filter` array. `confidence` is the page-relative min–max
 normalization of `rel`; `total` is the full match count in the corpus.
+
+`celex` is this corpus's anchor — the equivalent of naming the issuer on a
+filing search. An anchored call reports `scope: "issuer"`; with no `celex` the
+call runs across all 29 acts as `scope: "cross_company"` and carries a
+`quality_caveat`. Read those two fields, not `source`.
+
+(`retrieval.vespa_step_ms` and `vespa_total` are legacy key names for the
+engine's timing counters — kept deliberately so existing log queries keep
+working. The engine is Postgres + pgvector.)
 
 ## Direct HTTP examples (curl)
 

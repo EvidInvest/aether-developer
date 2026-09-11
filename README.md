@@ -14,7 +14,7 @@ aether-developer/
 │   ├── chatgpt.md       — ChatGPT Developer Mode setup
 │   ├── mcp.md           — Claude / Cursor / Cline / any MCP client
 │   ├── cursor.md        — Cursor specifics (one-click install)
-│   └── search.md        — REST API reference (/v1/tools/*)
+│   └── search.md        — REST API reference (/v1/tools/*), the issuer contract, fetch mode
 ├── skills/              — Agent Skills (drop into ~/.claude/skills)
 ├── mcp/                 — @evidinvest/aether-mcp (stdio MCP server, npm)
 ├── clients/
@@ -37,7 +37,9 @@ aether-developer/
 | **Cline / Continue / other stdio MCP** | `npx -y @evidinvest/aether-mcp` in the client's MCP config | [`docs/mcp.md`](./docs/mcp.md) |
 
 Then ask: *"What does Apple's latest 10-K say about supply-chain risk?
-Quote the passage with the sec.gov link."*
+Quote the passage with the sec.gov link."* Name the company in the
+question — every tool takes an `issuer`, and naming it is what makes the
+answer scoped rather than a relevance-ranked sweep of every filer.
 
 ## Teach your agent the craft (skills)
 
@@ -54,12 +56,24 @@ frameworks.
 
 ## Call the API from code
 
-Three REST endpoints — the same tools MCP exposes
+Four REST endpoints — the same tools MCP exposes
 ([full reference](./docs/search.md)):
 
 ```
+POST /v1/tools/search   ← start here (unified)
 POST /v1/tools/financial_search    POST /v1/tools/transcript_search    POST /v1/tools/regulation_search
 ```
+
+**Name the company, then narrow.** Pass `issuer` on every call and the answer
+is scoped to that filer: fast and precise. Omit it and the call searches every
+issuer at once — slower, relevance-ranked only, and the response carries a
+`quality_caveat`. `scope: "issuer"` with **no** caveat is the only guarantee
+you got a filtered answer, so read both fields.
+
+And `query` is optional: omit it, pass an identifier plus `form_type` /
+`fiscal_year` / `section`, and you get **fetch mode** — that filing's sections
+in filing order, no ranking, `mode: "fetch"`, tens of milliseconds. If you
+already know which document you want, don't rank it.
 
 ### TypeScript / Node
 
@@ -71,8 +85,28 @@ pnpm add @evidinvest/aether-sdk
 import { AetherClient } from "@evidinvest/aether-sdk";
 
 const aether = new AetherClient({ apiKey: process.env.AETHER_API_KEY });
-const out = await aether.financialSearch({ query: "Apple supply-chain risk", limit: 5 });
-for (const c of out.results) console.log(c.citation, c.metadata?.source_url);
+
+// search: the question in `query`, the company in `issuer`
+const out = await aether.financialSearch({
+  query: "supply-chain concentration risk",
+  issuer: { ticker: "AAPL" },
+  fiscal_year: 2025,
+  limit: 5,
+});
+if (out.quality_caveat) console.warn(out.scope, out.quality_caveat);
+for (const c of out.results) {
+  const start = c.metadata?.retrieval?.body_offset ?? 0; // skip the EDGAR cover page
+  console.log(c.citation, c.metadata?.source_url, c.text.slice(start, start + 200));
+}
+
+// fetch: no query — Apple's latest 10-K risk factors, in filing order
+const risks = await aether.financialSearch({
+  issuer: { ticker: "AAPL" },
+  form_type: ["10-K"],
+  section: "Item 1A",
+  limit: 5,
+});
+console.log(risks.mode); // "fetch" — and no `confidence` on any hit
 ```
 
 ### Python
@@ -85,18 +119,32 @@ pip install evidinvest-aether-sdk
 from aether import AetherClient
 
 with AetherClient(api_key="ak_...") as aether:
-    out = aether.financial_search(query="Apple supply-chain risk", limit=5)
+    out = aether.financial_search(
+        query="supply-chain concentration risk",
+        issuer={"ticker": "AAPL"},
+        fiscal_year=2025,
+        limit=5,
+    )
+    if out.quality_caveat:
+        print(out.scope, out.quality_caveat)
     for c in out.results:
-        print(c.citation, c.metadata.get("source_url"))
+        start = c.body_offset or 0          # skip the EDGAR cover page
+        print(c.citation, c.metadata.get("source_url"), c.text[start : start + 200])
+
+    # fetch: no query — Apple's latest 10-K risk factors, in filing order
+    risks = aether.financial_search(
+        issuer={"ticker": "AAPL"}, form_type=["10-K"], section="Item 1A", limit=5
+    )
+    print(risks.mode)   # "fetch" — and `confidence` is None on every hit
 ```
 
 ### curl / any language
 
 ```bash
-curl -sS https://api.aether.evidinvest.com/v1/tools/financial_search \
+curl -sS https://api.aether.evidinvest.com/v1/tools/search \
   -H "authorization: Bearer $AETHER_API_KEY" \
   -H "content-type: application/json" \
-  -d '{"query":"supply chain risk Taiwan","limit":5}' | jq .
+  -d '{"query":"supply chain risk Taiwan","issuer":{"ticker":"TSM"},"limit":5}' | jq .
 ```
 
 ## Docs
@@ -117,10 +165,12 @@ rate-limited; keys are free.
 - **SEC filings** — 10-K / 10-Q / 8-K, registration statements,
   prospectuses, press exhibits; ~10 years of S&P 500 and beyond.
 - **Non-US registries** — Sweden (Bolagsverket), Japan (EDINET),
-  Korea (DART) annual reports; scope with `jurisdiction: ["SE"|"JP"|"KR"]`.
+  Korea (DART) annual reports. Reach a non-US filer by name —
+  `issuer: {company_name: "Sivers Semiconductors"}` — or scope a whole market
+  with `jurisdiction: ["SE"|"JP"|"KR"]`.
 - **Earnings calls** — speaker-attributed transcripts + furnished press
   exhibits, with point-in-time filters (`order: "earliest"` finds first
-  mentions).
+  mentions) and the issuer's own `fiscal_year` + `quarter`.
 - **EU regulation** — MiFID II, MiCA, DORA, the AML package; article-level
   citations.
 
@@ -132,8 +182,12 @@ paid credits) when the trial ends.
 ## Contribute a client library
 
 The TypeScript and Python clients are intentionally tiny — one bearer-token
-fetch wrapper + typed shapes for the three `/v1/tools/*` endpoints. Porting
-to Go, Rust, Java, etc. is ~150 lines. Open a PR under `clients/<lang>/`.
+fetch wrapper + typed shapes for the `/v1/tools/*` endpoints. Porting to Go,
+Rust, Java, etc. is ~150 lines. Open a PR under `clients/<lang>/`. Whatever you
+write, surface `scope`, `quality_caveat`, `mode` and each hit's `body_offset`:
+a client that drops them leaves its users unable to tell a precise answer from
+an approximate one. Response fixtures to test against live in
+[`clients/fixtures/`](./clients/fixtures/).
 
 ## License
 

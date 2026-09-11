@@ -2,7 +2,7 @@
   "name": "node-search-example",
   "private": true,
   "version": "0.0.0",
-  "description": "Minimal Node script that calls /v1/search via @evidinvest/aether-sdk.",
+  "description": "Minimal Node script showing scoped search, fetch mode and a caveated cross-company call via @evidinvest/aether-sdk.",
   "type": "module",
   "scripts": {
     "start": "node --import tsx index.ts"

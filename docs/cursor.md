@@ -77,7 +77,7 @@ https://aether.evidinvest.com/developer/keys):
 - **Earnings-call transcripts** — segmented by speaker turn.
 - **EU financial regulation** — 29 acts, article-level.
 - **International filings** — Korea (DART) + Japan (EDINET) native-language coverage (query in Korean/Japanese).
-- **Retrieval** — BM25 + dense vectors + cross-encoder reranking + ticker-aware boosting.
+- **Retrieval** — BM25 + dense vectors fused into one score, scoped to the company you name in `issuer`. Omit the issuer and the answer comes back marked `scope: "cross_company"` with a `quality_caveat`.
 
 ## Listing Aether in the Cursor directories
 

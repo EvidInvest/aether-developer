@@ -82,8 +82,10 @@ Auto-discovered on startup from `${AETHER_API_BASE_URL}/v1/tools` (defaults to `
 
 | Tool | Purpose |
 |---|---|
-| `financial_search` | Hybrid SEC filing retrieval (BM25 + 256-d arctic-embed + cross-encoder rerank) |
+| `search` | Unified: filings + Japan/EDINET + Korea/DART + EU regulation + earnings calls, auto-routed and corpus-tagged. Use this for most questions |
+| `financial_search` | Hybrid SEC filing retrieval (BM25 + 256-d arctic-embed, fused in one score) |
 | `transcript_search` | Earnings-call transcript segment search |
+| `holdings_by_security` / `holdings_by_manager` | 13F ownership — who owns a stock, what a fund owns. Ownership questions do not go through search |
 | `regulation_search` | EU financial-regulation search — 29-act canon (MiFID II, MiCA, CRR, CRD, DORA, SFDR, GDPR, AML package, …); citable Article-paragraphs/recitals with EUR-Lex breadcrumbs. [Docs](../docs/regulation_search.md) |
 | `list_partners` | List marketplace sellers + per-call prices |
 | `partner_search` | Search a partner's indexed corpus (Mode A, free) |
@@ -116,7 +118,7 @@ Auto-discovered on startup from `${AETHER_API_BASE_URL}/v1/tools` (defaults to `
 } | npx -y @evidinvest/aether-mcp
 ```
 
-Expected: handshake reply on stdout, plus a `tools/list` response with 11 tool definitions.
+Expected: handshake reply on stdout, plus a `tools/list` response with 14 tool definitions.
 
 ## Architecture
 
@@ -129,14 +131,21 @@ MCP client (Claude Desktop / Cursor / Cline)
        ├──► HTTPS  aether.evidinvest.com/v1/oauth/*      (device-code auth, token refresh)
        └──► HTTPS  api.aether.evidinvest.com/v1/tools/*  (tool discovery + calls)
                                   │
-                                  ├──► Vespa (filing_chunk + transcript_segment + partner_document)
-                                  ├──► Embedder + reranker (BAAI/bge-reranker-v2-m3 on CPU)
+                                  ├──► Postgres + pgvector (filing_chunk, transcript_segment,
+                                  │    regulation_chunk, partner_document — 256-d vectors)
+                                  ├──► Embedder (256-d arctic-embed; no reranker)
                                   └──► Postgres (sellers, agents, marketplace state)
 ```
 
 MCP clients that want to skip this stdio wrapper can connect directly to the StreamableHTTP transport at `https://aether.evidinvest.com/mcp` — same surface, no Node subprocess needed.
 
-Tool defs are discovered once on startup; any new tools added upstream show up after restart without releasing a new npm version.
+### Tool definitions are fetched once, at startup
+
+This wrapper is a pass-through: it calls `GET /v1/tools` a single time when the process starts and serves that list for the life of the process. It does not re-poll.
+
+So when Aether changes a tool — new fields, new modes, reworded descriptions — **a running Claude Desktop / Cursor / Cline session keeps the old definitions until you restart it**. The agent will go on sending the shape it was told about, which is how a caller ends up still omitting `issuer` a week after the contract changed. Quit and reopen the client (or restart the MCP server from its settings) after any upstream contract change, then diff `tools/list` with the smoke test above. The public catalog is also edge-cached for 300 s, so give a fresh deploy a few minutes before concluding a field is missing.
+
+New tools added upstream likewise show up after a restart, without releasing a new npm version.
 
 ## License
 

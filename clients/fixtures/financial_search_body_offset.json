@@ -1,0 +1,53 @@
+{
+  "query": "TSMC monthly net revenue",
+  "mode": "search",
+  "domain": "auto",
+  "results": [
+    {
+      "id": "0001046179-26-000658-full-document",
+      "text": "6-K 1 tsm-revenue20260910.htm 6-K Document 1934 Act Registration No. 1-14700 UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, DC 20549 _____________________________ FORM 6-K ______________…",
+      "source": "sec/6-K/0001046179-26-000658",
+      "citation": "TAIWAN SEMICONDUCTOR MANUFACTURING CO LTD 6-K 2026-09-10 (FULL_DOCUMENT)",
+      "as_of_date": "2026-09-10",
+      "confidence": 0.3493732524682703,
+      "metadata": {
+        "cik": "0001046179",
+        "ticker": "",
+        "company_name": "TAIWAN SEMICONDUCTOR MANUFACTURING CO LTD",
+        "jurisdiction": "US",
+        "source_feed": "sec",
+        "form_type": "6-K",
+        "period_of_report": "2026-08-31",
+        "section": "FULL_DOCUMENT",
+        "parent_section_id": "0001046179-26-000658-full-document",
+        "accession_number": "0001046179-26-000658",
+        "chunk_id": "0001046179-26-000658-full-document-0000",
+        "chunk_index": 0,
+        "chunk_total": 1,
+        "is_section_complete": true,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000658/tsm-revenue20260910.htm",
+        "retrieval": {
+          "mode": "search",
+          "profile": "hybrid",
+          "ranking": "hybrid",
+          "explicit_ciks": [
+            "0001046179"
+          ],
+          "issuer_how": "explicit_ticker",
+          "candidate_pool": 150,
+          "dedupe_dropped": 123,
+          "junk_dropped": 5,
+          "body_offset": 1462,
+          "accessions_in_topk": 4,
+          "vespa_step_ms": 1027,
+          "vespa_total": 1612,
+          "rel": 0.287197417411262
+        }
+      }
+    }
+  ],
+  "scope": "issuer",
+  "total": 1612,
+  "source": "aether-pg-hybrid",
+  "latency_ms": 1478
+}

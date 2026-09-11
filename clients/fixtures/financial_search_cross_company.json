@@ -1,0 +1,88 @@
+{
+  "query": "HBM high bandwidth memory supply agreement",
+  "mode": "search",
+  "domain": "auto",
+  "results": [
+    {
+      "id": "0001645590-23-000117-item-15-0001",
+      "text": "001-37483 2.6 November 5, 2015 2.6 Information Technology Service Agreement, dated as of November 1, 2015, by and between Hewlett-Packard Company and HP Enterprise Services, LLC 8-K 001-37483 2.7 November 5, 2015 2.7 Agreement and Plan of M…",
+      "source": "sec/10-K/0001645590-23-000117",
+      "citation": "HPE 10-K 2023-12-22 (Item 15)",
+      "as_of_date": "2023-12-22",
+      "confidence": 0.48660022837513395,
+      "metadata": {
+        "cik": "0001645590",
+        "ticker": "HPE",
+        "company_name": "Hewlett Packard Enterprise Co",
+        "jurisdiction": "US",
+        "source_feed": "sec",
+        "form_type": "10-K",
+        "period_of_report": "2023-10-31",
+        "section": "Item 15",
+        "parent_section_id": "",
+        "accession_number": "0001645590-23-000117",
+        "chunk_id": "0001645590-23-000117-item-15-0001",
+        "chunk_index": 1,
+        "chunk_total": 259,
+        "is_section_complete": false,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1645590/000164559023000117/hpe-20231031.htm",
+        "retrieval": {
+          "mode": "search",
+          "profile": "hybrid",
+          "ranking": "hybrid",
+          "issuer_how": "inferred_from_query",
+          "candidate_pool": 50,
+          "dedupe_dropped": 0,
+          "junk_dropped": 3,
+          "accessions_in_topk": 2,
+          "vespa_step_ms": 463,
+          "vespa_total": 2000,
+          "rel": 0.2367797822547325
+        }
+      }
+    },
+    {
+      "id": "0001493152-26-026329-item-25",
+      "text": "term or provision, the parties hereto intend that there shall be added as a part of this Agreement a provision as similar in terms to such invalid or unenforceable provision as may be possible and be valid and enforceable. [signature page f…",
+      "source": "sec/DEF 14A/0001493152-26-026329",
+      "citation": "ALSAF DEF 14A 2026-05-29 (Item 25)",
+      "as_of_date": "2026-05-29",
+      "confidence": 0.48090386243014427,
+      "metadata": {
+        "cik": "0001865111",
+        "ticker": "ALSAF",
+        "company_name": "Alpha Star Acquisition Corp",
+        "jurisdiction": "US",
+        "source_feed": "sec",
+        "form_type": "DEF 14A",
+        "period_of_report": "2026-05-29",
+        "section": "Item 25",
+        "parent_section_id": "0001493152-26-026329-item-25",
+        "accession_number": "0001493152-26-026329",
+        "chunk_id": "0001493152-26-026329-item-25-0772",
+        "chunk_index": 772,
+        "chunk_total": 883,
+        "is_section_complete": false,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1865111/000149315226026329/formdef14a.htm",
+        "retrieval": {
+          "mode": "search",
+          "profile": "hybrid",
+          "ranking": "hybrid",
+          "issuer_how": "inferred_from_query",
+          "candidate_pool": 50,
+          "dedupe_dropped": 0,
+          "junk_dropped": 3,
+          "accessions_in_topk": 2,
+          "vespa_step_ms": 463,
+          "vespa_total": 2000,
+          "rel": 0.23475080103592458
+        }
+      }
+    }
+  ],
+  "scope": "cross_company",
+  "quality_caveat": "scope=cross_company: results span all issuers and are ranked by relevance only. For fast, precise results about one company, pass `issuer` (ticker, cik or company_name).",
+  "total": 2000,
+  "source": "aether-pg-hybrid",
+  "latency_ms": 3547
+}
