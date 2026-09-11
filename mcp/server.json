@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.EvidInvest/aether-developer",
-  "description": "Agent-native search engine for SEC filings (10-K/10-Q/8-K, S&P 500 x 10y), earnings-call transcripts, and EU financial regulation. Every result is a citation-complete payload — exact section text, accession-numbered citation, sec.gov source URL — ready to use as evidence, no HTML parsing. Hybrid retrieval (BM25 + dense, fused) with issuer scoping and a no-ranking fetch mode, plus a two-sided financial-data marketplace. Free 3-month trial, no card.",
+  "description": "Cited search over SEC filings, earnings transcripts and EU regulation, with fetch mode. 14 tools.",
   "repository": {
     "url": "https://github.com/EvidInvest/aether-developer",
     "source": "github"
@@ -18,7 +18,7 @@
       "environmentVariables": [
         {
           "name": "AETHER_API_KEY",
-          "description": "Optional Aether API key (ak_…). If unset, the package runs OAuth 2.0 device flow on first run. Get keys at https://aether.evidinvest.com/developer/keys.",
+          "description": "Optional Aether API key (ak_\u2026). If unset, the package runs OAuth 2.0 device flow on first run. Get keys at https://aether.evidinvest.com/developer/keys.",
           "required": false
         }
       ]
