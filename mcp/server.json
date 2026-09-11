@@ -23,5 +23,19 @@
         }
       ]
     }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://aether.evidinvest.com/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Bearer <AETHER_API_KEY> \u2014 free key at https://aether.evidinvest.com/developer/register (anonymous calls allowed at 5/hour)",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
   ]
 }
